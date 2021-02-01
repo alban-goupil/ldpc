@@ -4,16 +4,18 @@
 
 import numpy as np
 import ldpc
+import time
 
 
 ## * Paramètres du système
 
-ebnos = np.linspace(1, 5, 8)    # Le rapport signal à bruit
-minberrors = 100         # # erreurs bit minimum à observer
-minwerrors = 10         # # erreurs mot minimum à observer
-bpitmax = 100             # # maximum d'itération du BP
+ebnos = np.linspace(1, 5, 9)    # Le rapport signal à bruit
+minberrors = 1000               # min erreurs bit à observer
+minwerrors = 100                # min erreurs mot à observer
+bpitmax = 100                   # max itérations
 
-codefile = '../data/MacKay96-963.ldpc'
+codefile = '../data/MacKay96-963.ldpc' # Fichier LDPC
+ppevery = 1000       # Affichage temporaire tout les 10 mots
 
 
 ## * Construction du code
@@ -48,6 +50,7 @@ print('# EbNo  #it/cw  #codeword            '
 
 ## * Simulation
 
+tic = time.time()
 for ebno in ebnos:
   sigma2 = 10 ** (-ebno / 10.0) / 2 / code.rate
   sigma = np.sqrt(sigma2)       # Ecart-type du bruit
@@ -67,7 +70,7 @@ for ebno in ebnos:
     illr = 2.0 * rw / sigma2
     
     # Décodage
-    it, _ = code.bp(illr, bpitmax, out=ollr)
+    it = code.bp(illr, ollr, bpitmax)
     its += it
 
     # Comptage des erreurs
@@ -75,8 +78,20 @@ for ebno in ebnos:
     nbe += err
     if err > 0: nwe += 1
 
+    # Affichage
+    if 0 == ncw % ppevery:
+      print(f'\r'
+            f'{ebno: 6.2f} '
+            f'{its/ncw: 7.2f}  {ncw:<20d} '
+            f'{nbe/ncw/code.length:<9.2e} {nbe:<10d} '
+            f'{nwe/ncw:<9.2e} {nwe:<10d}', end='\r')
+
+    
   # Affichage
   print(f'{ebno: 6.2f} '
         f'{its/ncw: 7.2f}  {ncw:<20d} '
         f'{nbe/ncw/code.length:<9.2e} {nbe:<10d} '
         f'{nwe/ncw:<9.2e} {nwe:<10d}')
+
+tac = time.time()
+print(f"Time: {tac - tic}")
