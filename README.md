@@ -35,3 +35,8 @@ La simulation utilise le truc de l'envoi du code tout
 binaire et aussi d'erreurs sur les mots pour stopper la
 simulation en cours pour chaque $E_b/N_0$.
 
+## Alpha-stable
+
+La simulation dans bpsk-astable.py utilise la librairie
+astable.py pour simuler un canal alpha-stable et utilisant
+le LLR pour décoder.
