@@ -3,37 +3,12 @@ import scipy.special as sc
 from scipy.integrate import quad
 from scipy.stats import levy_stable
 
-def _pdf_maison(xs, alpha):
-  """Calcule la pdf en `x` d'une loi alpha-stable symétrique
-  de paramètre `alpha` et de facteur d'échelle 1.
-  """
-  ia = 1/alpha
-
-  def phi(t):
-    ta = t ** alpha
-    return np.exp(-ta) if ta < 700.0 else 0.0
-
-  def f(u):
-    return np.cos(x * np.power(u, ia)) * np.power(u, ia-1) * np.exp(-u)
-  
-  ps = np.empty_like(xs)
-  for i, x in enumerate(xs):
-    if x < 1e-12:
-      ps[i] = sc.gamma(1+ia)
-    elif x < 1:
-      ps[i] = quad(f, 0.0, np.inf, limlst=1000)[0] / alpha
-    else:
-      ps[i] = quad(phi, 0.0, np.inf, weight="cos",
-                   wvar=np.abs(x), limlst=1000)[0]
-  return ps / np.pi
-
 
 def _pdf(xs, alpha):
   """Calcule la pdf en `x` d'une loi alpha-stable symétrique
   de paramètre `alpha` et de facteur d'échelle 1.
   """
   return levy_stable.pdf(xs, alpha=alpha, beta=0)
-
 
 
 def _samples(rng, alpha, size=None, eps=1e-5):
@@ -46,7 +21,6 @@ def _samples(rng, alpha, size=None, eps=1e-5):
   w = -np.log(rng.uniform(size=size))
   return np.sin(alpha * phi) / np.power(np.cos(phi), 1.0/alpha) \
     * np.power((np.cos((1.0-alpha)*phi)/w), 1.0/alpha-1)
-
 
 
 class SaS:
@@ -82,7 +56,6 @@ class SaS:
     f = t - i
     i[i >= self.xlut.size - 1] = self.xlut.size - 2
     p = self.yplut[i.astype(int)] * (1-f) + self.yplut[i.astype(int)+1] * f - np.log(gamma)
-    #p[p < -100.0] = -100.0
     return p
 
 
