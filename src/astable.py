@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.special as sc
 from scipy.integrate import quad
 from scipy.stats import levy_stable
 
@@ -45,6 +46,7 @@ class SaS:
     f = t - i
     i[i >= self.xlut.size - 1] = self.xlut.size - 3
     p = self.ylut[i.astype(int)] * (1-f) + self.ylut[i.astype(int)+1] * f
+    #p[p < 1e-100] = 1e-100
     return p / gamma
 
   
