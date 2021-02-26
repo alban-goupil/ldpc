@@ -2,8 +2,17 @@
 
 Ce projet implémente le décodage d'une code LDPC avec
 l'algorithme de la propagation de croyance en python
-uniquement. Un programme d'exemple est donné dans le fichier
-`bpsk.py`.
+uniquement.
+
+Les programmes de simulations sur canal AWGN sont
+[bpsk.py](./src/bpsk.py) pour la modulation BPSK,
+[4ask.py](./src/4ask.py) pour la modulation 4-ASK (ou 4-PAM)
+et [8ask.py](./src/8ask.py) pour la 8-ASK.
+
+Su canal alpha-stable, les programmes de simulation
+équivalents sont [bpsk-astable.py](./src/bpsk-astable.py),
+[4ask-astable.py](./src/4ask-astable.py) et
+[8ask-astable.py](./src/8ask-astable.py) respectivement.
 
 ## Format des codes LDPC
 
@@ -30,10 +39,11 @@ et représenté par le fichier
 
 ## Simulation
 
-La simulation utilise le truc de l'envoi du code tout
-à zéro. Il faut atteindre un nombre minimal d'erreurs
-binaire et aussi d'erreurs sur les mots pour stopper la
-simulation en cours pour chaque $E_b/N_0$.
+La simulation utilise le truc de l'envoi du code tout à zéro
+en BPSK ou encore l'utilisation d'un offset aléatoire en
+ASK. Il faut atteindre un nombre minimal d'erreurs binaire
+et aussi d'erreurs sur les mots pour stopper la simulation
+en cours pour chaque $E_b/N_0$.
 
 ## Alpha-stable
 
