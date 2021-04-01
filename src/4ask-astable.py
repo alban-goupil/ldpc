@@ -24,13 +24,13 @@ from astable import SaS
 
 ## * Paramètres du système
 
-alpha = 1.6                      # Exposant du bruit SaS
-gammas = np.linspace(.1, .5, 4) # Échelle du bruit
+alpha = 1.6                     # Exposant du bruit SaS
+gammas = [.61, .6, .59]   # Échelle du bruit
 minberrors = 5000               # min erreurs bit à observer
-minwerrors = 100                # min erreurs mot à observer
+minwerrors = 1000               # min erreurs mot à observer
 bpitmax = 100                   # max itérations
 
-codefile = '../data/MacKay96-963.ldpc' # Fichier LDPC
+codefile = '../data/MacKay20000.ldpc' # Fichier LDPC
 ppevery = 1000       # Affichage temporaire tout les 10 mots
 
 
